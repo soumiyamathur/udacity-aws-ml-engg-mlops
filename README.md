@@ -93,10 +93,11 @@ Upload the data to an S3 bucket through the AWS Gateway so that SageMaker has ac
 ![Securing connection](images/IAM-role-for-lambda.png "IAM role")
 
 ## High Troughput and Low Latency Handling (concurrency and auto-scaling)
-- For concurrency I choose the Provisioned concurrency to make instances always on without requiring a wait for start-up time and that achieve low latency in high traffic and I choose to make 3 instance for concurrency and that cost 4.19$ in addition to pricing for duration and requests. 
+- For Lambda concurrency I choose the Provisioned concurrency to make instances always on without requiring a wait for start-up time and that achieve low latency in high traffic and I choose to make 2 instance for concurrency.
 
 ![Lambda concurrency](images/Lambda-concurrency.png "Lambda Concurrency")
-- For Auto-Scaling to deal with high-requested gets from Lambda Function I use 3 maximum instance count for auto scaling and in Scale in cool down I will configure to start a new instance after 10 second if I get more than 15 requests in the same time and if I get less than 15 request in the same time for 1 minutes I close the additional instance that uses for deal with high throughput
+
+- For Endpoint Auto-Scaling to deal with high-requested gets from Lambda Function I use 3 maximum instance count for auto scaling and in Scale in cool down I will configure to start a new instance after 30 second if I get more than 10 requests in the same time and if I get less than 10 request in the same time for 2 minutes I close the additional instance that uses for deal with high throughput
 ![Endpoint Auto-scaling](images/auto-scaling-endpoint.png "End Point auto-scaling")
 
 
