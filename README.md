@@ -13,10 +13,10 @@ Enter AWS through the gateway in the course and open SageMaker Studio.
 ## Notebook Instance
 Created notebook instance
 ![Notebook Instance](images/notebook-instance.png "Notebook Instance")
-        - I have used ml.t3.medium instance type for the Notebook instance.
-        - This instance type has 2vCPUs, 4GB menory and price of $0.05/hr.
-        - This instance types comes under Free Tier of AWS with 250 hours usage.
-        - Since my python notebook does not have any code that needs high computation or is long running, this type of instance works and is within budget.
+- I have used ml.t3.medium instance type for the Notebook instance.
+- This instance type has 2vCPUs, 4GB menory and price of $0.05/hr.
+- This instance types comes under Free Tier of AWS with 250 hours usage.
+- Since my python notebook does not have any code that needs high computation or is long running, this type of instance works and is within budget.
 
 Download the starter files.
 Download/Make the dataset available. 
