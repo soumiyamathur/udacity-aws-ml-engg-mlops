@@ -96,11 +96,11 @@ Upload the data to an S3 bucket through the AWS Gateway so that SageMaker has ac
 ![Invoke Result](images/lambda-result.png "invoking result")
 
 ### Securing Lambda function and endpoint connection with IAM role
-- for security manner, we add only the specific role to perform this task not Full Access to Sagemaker to limit the access for lambda and limit any security vulnerabilities.
+- For security measure, I only added the specific role to perform this task not Full Access to Sagemaker, so that to limit the access for lambda and limit any security vulnerabilities.
 ![Securing connection](images/IAM-role-for-lambda.png "IAM role")
 
-## High Troughput and Low Latency Handling (concurrency and auto-scaling)
-- For Lambda concurrency I choose the Provisioned concurrency to make instances always on without requiring a wait for start-up time and that achieve low latency in high traffic and I choose to make 2 instance for concurrency.
+## High Throughput and Low Latency Handling (concurrency and auto-scaling)
+- For Lambda concurrency I have chosen the Provisioned concurrency to make instances always on without requiring a wait for start-up time and that achieve low latency in high traffic and I have chosen to make 2 instance for concurrency.
 - Provisioned Concurrency is calculated from the time its enabled on lambda function until it is disabled, rounded up to the nearest five minutes. The price depends on the amount of memory that is  allocate to lambda function (which is 128MB in our case) and the amount of concurrency configured on it. 
 - Duration is calculated from the time lambda code begins executing until it returns or otherwise terminates, rounded up to the nearest 1ms**. 
 - Since the lambda response is taking under 3s, lower provisioned concurrency works well. 
