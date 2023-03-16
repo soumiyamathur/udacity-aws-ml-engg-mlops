@@ -12,7 +12,12 @@ The following tasks are performed.
 Enter AWS through the gateway in the course and open SageMaker Studio. 
 ## Notebook Instance
 Created notebook instance
- ![Notebook Instance](images/notebook-instance.png "Notebook Instance")
+![Notebook Instance](images/notebook-instance.png "Notebook Instance")
+        - I have used ml.t3.medium instance type for the Notebook instance.
+        - This instance type has 2vCPUs, 4GB menory and price of $0.05/hr.
+        - This instance types comes under Free Tier of AWS with 250 hours usage.
+        - Since my python notebook does not have any code that needs high computation or is long running, this type of instance works and is within budget.
+
 Download the starter files.
 Download/Make the dataset available. 
 You can use this link to get the starter [files](https://github.com/udacity/CD0387-deep-learning-topics-within-computer-vision-nlp-project-starter)
@@ -83,7 +88,9 @@ Upload the data to an S3 bucket through the AWS Gateway so that SageMaker has ac
 ![EC2](images/ec2.png "EC2")
 - To train a model on EC2 instance, image data need to be downloaded to EC2, however with Sagemkaker, data is stored in S3.
 - Once the training is complete, the trained model is saved to EC2 as well, however with Sagemaker, model is stored in S3.
-- With training on EC2, there is additional work for IT teams to manage EC2 infrastructure, which is managed by AWS when using Sagemaker
+- With training on EC2, there is additional work for IT teams to manage EC2 infrastructure, which is managed by AWS when using Sagemaker.
+- The On Demand EC2 instance type is p2.xlarge which comes with 4vCPUs, 61GB memory and high network performance with on demand hourly rate of $0.90/hr.
+- The reason for choosing this instance type is that is has enough CPUs and memory to manage the image data. Training took a lot longer on this instance, but I had budget constraints so I used this instance. 
 
 ### Invoke Endpoint by Lambda Function
 ![Invoke Result](images/lambda-result.png "invoking result")
@@ -94,10 +101,19 @@ Upload the data to an S3 bucket through the AWS Gateway so that SageMaker has ac
 
 ## High Troughput and Low Latency Handling (concurrency and auto-scaling)
 - For Lambda concurrency I choose the Provisioned concurrency to make instances always on without requiring a wait for start-up time and that achieve low latency in high traffic and I choose to make 2 instance for concurrency.
+- Provisioned Concurrency is calculated from the time its enabled on lambda function until it is disabled, rounded up to the nearest five minutes. The price depends on the amount of memory that is  allocate to lambda function (which is 128MB in our case) and the amount of concurrency configured on it. 
+- Duration is calculated from the time lambda code begins executing until it returns or otherwise terminates, rounded up to the nearest 1ms**. 
+- Since the lambda response is taking under 3s, lower provisioned concurrency works well. 
 
 ![Lambda concurrency](images/Lambda-concurrency.png "Lambda Concurrency")
 
-- For Endpoint Auto-Scaling to deal with high-requested gets from Lambda Function I use 3 maximum instance count for auto scaling and in Scale in cool down I will configure to start a new instance after 30 second if I get more than 10 requests in the same time and if I get less than 10 request in the same time for 2 minutes I close the additional instance that uses for deal with high throughput
+- For Endpoint Auto-Scaling I have used minimum of 1 instance and max of 3 instances.
+- The Scaling In (reducing instances) occurs when the number of endpoint hits reduces from 10 at the same time for 2 mins, 
+- The Scaling Out (increasing instances) occurs when the number of endpoint hits increase from 10 at the same time for 30seconds, 
+- The endpoint instance type is ml.m5.large which has 2 vCPUs. 8GB Ram and price of $0.115 per hour
+- This type of low costing instance works well within budget as well.
+
+
 ![Endpoint Auto-scaling](images/auto-scaling-endpoint.png "End Point auto-scaling")
 
 
